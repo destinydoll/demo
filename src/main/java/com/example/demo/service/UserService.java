@@ -4,6 +4,9 @@ import com.example.demo.database.entity.UserData;
 import com.example.demo.database.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -24,6 +27,7 @@ public class UserService implements UserServiceInterface {
     }
 
     @Override
+    @CachePut(value = "user", key = "#p0")
     public Optional<UserData> updateUser(int id, UserData user) {
         Optional<UserData> userData = userRepository.findById(id);
         if (userData.isPresent()) {
@@ -45,9 +49,10 @@ public class UserService implements UserServiceInterface {
     }
 
     @Override
-    public boolean deleteUserById(int id) {
+    @CacheEvict(value = "user", allEntries = true)
+    public boolean deleteUserById(int userId) {
         try {
-            userRepository.deleteById(id);
+            userRepository.deleteById(userId);
             log.info("user deleted");
             return true;
         } catch (EmptyResultDataAccessException emptyResultDataAccessException) {
@@ -61,7 +66,9 @@ public class UserService implements UserServiceInterface {
     }
 
     @Override
+    @Cacheable(value = "user", key = "#p0", unless = "#result==null")
     public Optional<UserData> findById(int userId) {
+        log.info("Retrieve User ID: {}", userId);
         return userRepository.findById(userId);
     }
 }

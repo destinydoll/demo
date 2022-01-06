@@ -16,3 +16,11 @@ spring:
       org:
         hibernate:
           type: trace
+
+  cache:
+    type: redis
+    redis:
+      time-to-live: 60000
+  redis:
+    host: localhost
+    port: 6379

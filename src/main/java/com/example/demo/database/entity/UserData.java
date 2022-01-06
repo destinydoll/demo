@@ -7,11 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Data
-public class UserData {
+public class UserData implements Serializable {
 
     public UserData(String name, String surname, String email) {
         this.name = name;
