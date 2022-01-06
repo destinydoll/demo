@@ -2,11 +2,17 @@ spring:
   jpa:
     database: POSTGRESQL
     show-sql: true
-    hibernate:
-      ddl-auto: create-drop
   datasource:
     platform: postgres
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
     password: demopwd
     driverClassName: org.postgresql.Driver
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  logging:
+    level:
+      org:
+        hibernate:
+          type: trace
