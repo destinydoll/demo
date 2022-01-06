@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.database.entity.UserData;
 import com.example.demo.database.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import org.springframework.util.ObjectUtils;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class UserService implements UserServiceInterface {
 
@@ -37,6 +39,7 @@ public class UserService implements UserServiceInterface {
             }
             return Optional.of(userRepository.save(userDataToUpdate));
         } else {
+            log.info("user not found");
             return Optional.empty();
         }
     }
@@ -45,6 +48,7 @@ public class UserService implements UserServiceInterface {
     public boolean deleteUserById(int id) {
         try {
             userRepository.deleteById(id);
+            log.info("user deleted");
             return true;
         } catch (EmptyResultDataAccessException emptyResultDataAccessException) {
             return false;
